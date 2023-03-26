@@ -201,5 +201,45 @@ namespace WebApi.Controllers
             return message;
         }
 
+        [HttpGet]
+        public List<ReportData> Reportdata() {
+            List<ReportData> reportdata = new List<ReportData>();
+            DataTable dt = new DataTable();
+            try
+            {
+
+                SqlConnection conn = new SqlConnection("data source=LAPTOP-0J6EU6I9\\SQLEXPRESS;database=practices;user id=sa;password=Pass@123;");
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = "sp_reportdata";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+                SqlDataAdapter sq = new SqlDataAdapter(cmd);
+                sq.Fill(dt);
+
+                foreach (DataRow item in dt.Rows  )
+                {
+                    ReportData rd = new ReportData();
+                    rd.Name = Convert.ToString(item["CustomerName"]);
+                    rd.ProducttName=new List<string>() {Convert.ToString(item["Product_Name"]) };
+                    rd.Address = Convert.ToString(item["Address"]);
+                    rd.City = Convert.ToString(item["CITY_Name"]);
+                    rd.State = Convert.ToString(item["State_Name"]);
+                    rd.Pincode = Convert.ToInt32(item["Pincode"]);
+                    rd.DOB = Convert.ToDateTime(item["DOB"]);
+                    reportdata.Add(rd);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+              
+            }
+
+
+
+            return reportdata;
+
+        }
     }
 }
