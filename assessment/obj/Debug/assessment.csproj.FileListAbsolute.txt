@@ -80,4 +80,3 @@ C:\Users\Nikhil Singh\nikhil pro\assessment\assessment\obj\Debug\assessment.cspr
 C:\Users\Nikhil Singh\nikhil pro\assessment\assessment\obj\Debug\assessment.csproj.CopyComplete
 C:\Users\Nikhil Singh\nikhil pro\assessment\assessment\obj\Debug\assessment.dll
 C:\Users\Nikhil Singh\nikhil pro\assessment\assessment\obj\Debug\assessment.pdb
-C:\Users\Nikhil Singh\nikhil pro\assessment\assessment\obj\Debug\assessment.csprojAssemblyReference.cache
