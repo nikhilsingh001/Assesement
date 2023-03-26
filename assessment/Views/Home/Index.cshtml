@@ -1,0 +1,171 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+
+
+}
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+
+@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">*@
+<script type="text/javascript">
+
+    $(document).ready(function () {
+     
+        getCity();
+        getState();
+        getproduct();
+        getincode();
+        AddCustomer();
+    })
+
+    function getCity() {
+        debugger;
+        $.getJSON("http://localhost:50731/api/values/getcity", function (data) {
+
+            $.each(data, function (key, val) {
+
+
+
+
+                $("#ddlcity").append('<option value=' + val.StateID + ' data-id=' + val.cityID + '>' + val.Cityname + '</option>');
+
+
+            });
+        })
+
+
+    }
+
+    function getState() {
+        $('#ddlcity').change(function () {
+            debugger;
+            $.getJSON("http://localhost:50731/api/values/GetState", { StateID: $('#ddlcity').val() }, function (data) {
+
+                $.each(data, function (key, val) {
+
+
+                    $("#ddlstate").empty();
+
+                    $("#ddlstate").append('<option value=' + val.StateID + '>' + val.StateName + '</option>');
+
+
+                });
+            })
+        });
+
+    }
+
+    function getproduct() {
+
+        $.getJSON("http://localhost:50731/api/values/GetProduct", function (data) {
+
+            $.each(data, function (key, val) {
+
+
+
+
+                $("#ddlproduct").append('<option value=' + val.productid + '>' + val.ProductName + '</option>');
+
+
+            });
+        })
+
+
+    }
+
+    function AddCustomer() {
+
+
+        $('#btnsave').click(function () {
+            debugger;
+            var cus = {};
+            cus.Name = $("#txtName").val()
+            cus.ProductId = $("#ddlproduct").val()
+            cus.Address = $("#txtAddress").val()
+            cus.City = $("#ddlcity").find(':selected').data('id')
+            cus.State = $("#ddlstate").val()
+            cus.Pincode = $("#txtpin").val()
+            cus.DOB = $("#txtDOB").val()
+
+            try {
+
+                console.log(JSON.stringify(cus));
+                $.post('http://localhost:50731/api/values/AddCustomer', cus, function (result) {
+                    alert(result);
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        });
+
+
+    }
+
+    function getincode() {
+        $('#ddlcity').change(function () {
+            debugger;
+            $.getJSON("http://localhost:50731/api/values/GetPincode", { cityid: $("#ddlcity").find(':selected').data('id') }, function (data) {
+
+
+
+
+                console.log(data)
+
+                $("#txtpin").val(data);
+
+
+
+            });
+        });
+
+
+    }
+
+</script>
+
+<div>
+
+
+    <table>
+        <tr>
+            <td>Product Name:  </td>
+            <td><select id="ddlproduct" class="select" multiple></select>
+            <td>
+        </tr>
+        <tr>
+            <td>Customer Name:  </td>
+            <td><input type="text" id="txtName" />
+            <td>
+        </tr>
+        <tr>
+            <td>Customer Address: </td>
+            <td><input type="text" id="txtAddress" /></td>
+        </tr>
+        <tr>
+            <td>City: </td>
+            <td>
+                <select id="ddlcity">
+                    <option value="0">--select--</option>
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>State: </td>
+            <td><select id="ddlstate"></select></td>
+        </tr>
+        <tr>
+            <td>Pincode: </td>
+            <td><input type="number" id="txtpin" /></td>
+        </tr>
+        <tr>
+            <td>DOB: </td>
+            <td><input type="date" id="txtDOB" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="button" value="Submit Form" id="btnsave" /></td>
+        </tr>
+    </table>
+
+
+</div>
